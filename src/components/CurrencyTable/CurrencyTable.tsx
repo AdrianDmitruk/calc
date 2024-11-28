@@ -13,32 +13,40 @@ export const CurrencyTable: FC = () => {
 
 	const generateCSVData = () => {
 		return (
-			currentRates?.rates.map(rate => ({
-				Name: rate.name || 'N/A',
-				'Base Currency': baseCurrency,
-				'Target Currency': rate.code,
-				'Current Rate': rate.rate.toFixed(4),
-				'Converted Amount': amount
+			currentRates?.rates.map(rate => {
+				const historicalRate = historicalRates?.rates.find(
+					r => r.code === rate.code
+				)
+				const targetAmountCurrent = amount
 					? (parseFloat(amount as string) * rate.rate).toFixed(2)
-					: 'N/A',
-				'Historical Rate':
-					historicalRates?.rates
-						.find(r => r.code === rate.code)
-						?.rate.toFixed(4) || 'N/A',
-				'Last Update': historicalRates?.rates.find(r => r.code === rate.code)
-					?.lastUpdate
-					? new Date(
-							historicalRates.rates.find(r => r.code === rate.code)
-								?.lastUpdate || ''
-					  ).toLocaleString()
-					: 'N/A',
-			})) || []
+					: 'N/A'
+				const targetAmountHistorical =
+					historicalRate && amount
+						? (parseFloat(amount as string) * historicalRate.rate).toFixed(2)
+						: 'N/A'
+
+				return {
+					Name: rate.name || 'N/A',
+					'Base Amount': amount || 'N/A',
+					'Base Currency': baseCurrency,
+					'Target Currency': rate.code,
+					'Current Rate': rate.rate.toFixed(4),
+					'Converted Amount (Current Rate)': targetAmountCurrent,
+					'Target Amount (Historical Rate)': targetAmountHistorical,
+					'Historical Rate': historicalRate
+						? historicalRate.rate.toFixed(4)
+						: 'N/A',
+					'Last Update': historicalRate?.lastUpdate
+						? new Date(historicalRate.lastUpdate).toLocaleString()
+						: 'N/A',
+				}
+			}) || []
 		)
 	}
 
 	return (
 		<div className={classes.content}>
-			{(currentRates || historicalRates) && (
+			{currentRates || historicalRates ? (
 				<>
 					<CSVLink
 						data={generateCSVData()}
@@ -47,15 +55,17 @@ export const CurrencyTable: FC = () => {
 					>
 						<Button>Download CSV</Button>
 					</CSVLink>
-					<Table.ScrollContainer minWidth={871}>
+					<Table.ScrollContainer minWidth={1402}>
 						<Table verticalSpacing='xs'>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>Name</Table.Th>
+									<Table.Th>Base Amount</Table.Th>
 									<Table.Th>Base Currency</Table.Th>
 									<Table.Th>Target Currency</Table.Th>
 									<Table.Th>Current Rate</Table.Th>
-									<Table.Th>Converted Amount</Table.Th>
+									<Table.Th>Converted Amount (Current Rate)</Table.Th>
+									<Table.Th>Converted Amount (Historical Rate)</Table.Th>
 									<Table.Th>Historical Rate</Table.Th>
 									<Table.Th>Last Update</Table.Th>
 								</Table.Tr>
@@ -65,20 +75,25 @@ export const CurrencyTable: FC = () => {
 									const historicalRate = historicalRates?.rates.find(
 										r => r.code === rate.code
 									)
+									const targetAmountCurrent = amount
+										? (parseFloat(amount as string) * rate.rate).toFixed(2)
+										: 'N/A'
+									const targetAmountHistorical =
+										historicalRate && amount
+											? (
+													parseFloat(amount as string) * historicalRate.rate
+											  ).toFixed(2)
+											: 'N/A'
 
 									return (
 										<Table.Tr key={rate.code}>
 											<Table.Td>{rate.name || 'N/A'}</Table.Td>
+											<Table.Td>{amount || 'N/A'}</Table.Td>
 											<Table.Td>{baseCurrency}</Table.Td>
 											<Table.Td>{rate.code}</Table.Td>
 											<Table.Td>{rate.rate.toFixed(4)}</Table.Td>
-											<Table.Td>
-												{amount
-													? (parseFloat(amount as string) * rate.rate).toFixed(
-															2
-													  )
-													: 'N/A'}
-											</Table.Td>
+											<Table.Td>{targetAmountCurrent}</Table.Td>
+											<Table.Td>{targetAmountHistorical}</Table.Td>
 											<Table.Td>
 												{historicalRate
 													? historicalRate.rate.toFixed(4)
@@ -96,7 +111,7 @@ export const CurrencyTable: FC = () => {
 						</Table>
 					</Table.ScrollContainer>
 				</>
-			)}
+			) : null}
 		</div>
 	)
 }
