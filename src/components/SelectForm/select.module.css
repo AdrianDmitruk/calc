@@ -1,0 +1,12 @@
+.select {
+	@media (max-width: 797px) {
+		flex-direction: column !important;
+	}
+}
+
+.selectRoot {
+	@media (max-width: 797px) {
+		max-width: 100% !important;
+		width: 100% !important;
+	}
+}

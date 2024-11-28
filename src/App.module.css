@@ -1,0 +1,23 @@
+.logoWrap {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.logo {
+	width: 440px;
+	height: auto;
+
+	@media (max-width: 797px) {
+		width: 240px;
+	}
+}
+
+.wrap {
+	flex: 1 0 auto;
+	padding: 20px;
+	max-width: 1800px;
+	width: 100%;
+	margin: 0 auto;
+}

@@ -1,0 +1,67 @@
+export const constants = {
+	BASE_URL: 'https://cpservm.com/gateway/exchangerates/api',
+	TOKEN_URL: 'https://cpservm.com/gateway/token',
+	LANGUAGE_API: '/directories/language',
+	CURRENCIES_API: '/GetCurrencies',
+	HISTORY_API: '/GetCurrenciesFromHistory',
+}
+
+export const ref = 188
+
+export const languageOptions = [
+	{
+		id: 1,
+		uriName: 'en',
+		localized: 'English',
+		textDirectionRTL: false,
+		isoCode: 'en_GB',
+	},
+	{
+		id: 3,
+		uriName: 'ru',
+		localized: 'Русский',
+		textDirectionRTL: false,
+		isoCode: 'ru_RU',
+	},
+]
+
+export const currencyOptions = [
+	'XAF',
+	'XOF',
+	'ZMW',
+	'ZAR',
+	'CDF',
+	'GHS',
+	'RWF',
+	'UGX',
+	'USD',
+	'USDT',
+	'DZD',
+	'AOA',
+	'BWP',
+	'BIF',
+	'CVE',
+	'KMF',
+	'DJF',
+	'EGP',
+	'ERN',
+	'GMD',
+	'GNF',
+	'KES',
+	'LRD',
+	'MGA',
+	'MWK',
+	'MRU',
+	'MUR',
+	'MAD',
+	'MZN',
+	'NAD',
+	'STN',
+	'SCR',
+	'SLL',
+	'SSP',
+	'SDG',
+	'TZS',
+	'TND',
+	'ZWL',
+]
